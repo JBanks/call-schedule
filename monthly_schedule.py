@@ -16,7 +16,7 @@ class Weekday(IntEnum):
 
 class ResidentSchedulingSolver:
     def __init__(self, 
-                 start_date: str = '2024-05-06', 
+                 start_date: str = '2024-05-06', # Must start on a Monday
                  num_days: int = 28, 
                  nofill: list[int] = [], 
                  max_shifts_per_week: int = 1, 
@@ -37,13 +37,13 @@ class ResidentSchedulingSolver:
         self.half_day_call_penalty = 2
         self.days = list(range(num_days))
         self.schedules = {}  # To store the schedule of each resident
-        if residents_info:
-            for resident in residents_info:
-                self.add_resident_info(**resident)
         self.nofill = nofill
         self.num_nofill = len(self.nofill)
         self.days_to_fill = self.num_days - len(self.nofill)
         self.start_date = date.fromisoformat(start_date)
+        if residents_info:
+            for resident in residents_info:
+                self.add_resident_info(**resident)
 
         def build_weekday_list(weekday: Weekday):
             return [weekday for weekday in range(weekday, num_days, len(Weekday))]
@@ -498,7 +498,7 @@ class ResidentSchedulingSolver:
                 #         print("            ", end="")
             print("")
 
-if True:
+if False:
     ## Senior block 11
     senior_solver = ResidentSchedulingSolver(
         start_date='2024-04-08',
@@ -516,7 +516,7 @@ if True:
     senior_solver.solve()
     senior_solver.print_schedule()
 
-if True:
+if False:
     ## Senior Block 12
     senior_solver = ResidentSchedulingSolver(
         classification='senior',
@@ -537,7 +537,7 @@ if True:
     senior_solver.solve()
     senior_solver.print_schedule()
 
-if True:
+if False:
     junior_solver = ResidentSchedulingSolver(nofill=[5, 12, 23])  
             # H is very restricted in call.  It's easier to no-fill the days that H will be on call and then 
             # manually select another person to pair them with.  There's also a day where no trauma residents 
